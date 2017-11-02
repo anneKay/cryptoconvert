@@ -14,7 +14,7 @@ import static android.net.wifi.p2p.nsd.WifiP2pServiceRequest.newInstance;
  */
 
 public class CustomPagerAdapter extends FragmentPagerAdapter {
-    private String tabTitles[] = new String[] { "Recent", "Featured Coins" };
+    private String tabTitles[] = new String[] { "Featured", "Recent" };
 
     public CustomPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -23,9 +23,11 @@ public class CustomPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new RecentFragment();
-        }else {
             return new FeaturedCoinsFragment();
+
+
+        }else {
+            return new RecentFragment();
         }
     }
 

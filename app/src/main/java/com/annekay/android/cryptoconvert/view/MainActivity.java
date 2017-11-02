@@ -9,6 +9,8 @@ import com.annekay.android.cryptoconvert.R;
 import com.annekay.android.cryptoconvert.adapter.CustomPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
+    //public static final String LOG_TAG = MainActivity.class.getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

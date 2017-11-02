@@ -1,0 +1,56 @@
+apply plugin: 'com.android.application'
+ext {
+    arch_version = '1.0.0-alpha9-1'
+    support_lib_version = '26.1.0'
+
+}
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
+    defaultConfig {
+        applicationId "com.annekay.android.cryptoconvert"
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+//        jackOptions {
+//            enabled true
+//        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+    configurations.all {
+        resolutionStrategy {
+            force "com.android.support:appcompat-v7:$support_lib_version"
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile "com.android.support:appcompat-v7:$support_lib_version"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:support-v4:26.1.0'
+    debugCompile 'com.android.volley:volley:1.0.0'
+    compile "com.android.support:cardview-v7:$support_lib_version"
+    compile "com.android.support:recyclerview-v7:$support_lib_version"
+    compile 'android.arch.lifecycle:runtime:1.0.0'
+    compile "android.arch.lifecycle:extensions:$arch_version"
+    annotationProcessor "android.arch.lifecycle:compiler:$arch_version"
+    testCompile 'junit:junit:4.12'
+}
