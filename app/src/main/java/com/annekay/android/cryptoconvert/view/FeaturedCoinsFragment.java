@@ -94,17 +94,10 @@ public class FeaturedCoinsFragment extends Fragment {
 
     private void setupView() {
 
-
-        mRecyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(
                 getActivity(), LinearLayoutManager.VERTICAL, false)
         );
         mRecyclerView.hasFixedSize();
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
-                mRecyclerView.getContext(), LinearLayoutManager.VERTICAL
-        );
-        mRecyclerView.addItemDecoration(mDividerItemDecoration);
         mAdapter = new CurrencyAdapter(getLayoutInflater());
         mRecyclerView.setAdapter(mAdapter);
     }
