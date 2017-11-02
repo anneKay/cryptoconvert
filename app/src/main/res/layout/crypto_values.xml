@@ -29,12 +29,25 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/btc_image"
                     android:layout_gravity="center" />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/btc"
-                    android:textSize="30sp" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="28sp"
+                        android:id="@+id/base_currency_btc"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btc"
+                        android:textSize="30sp" />
+
+                </LinearLayout>
+
+
              </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -49,12 +62,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/eth_image"/>
-
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/eth"
-                    android:textSize="30sp"/>
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="28sp"
+                        android:id="@+id/base_currency_eth"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/eth"
+                        android:textSize="30sp" />
+
+                </LinearLayout>
+
              </LinearLayout>
         </LinearLayout>
 
