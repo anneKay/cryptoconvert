@@ -12,7 +12,7 @@ public class Crypto {
     private Double mCryptoValue;
     private BTC bTC;
     private ETH eTH;
-    private String mCurrency;
+    private String mCurrency, mCrypto;
 
     public Crypto(String currency, Double btcValue, Double ethValue) {
 
@@ -22,9 +22,10 @@ public class Crypto {
 
     }
 
-    public Crypto (String currency, Double cryptoValue){
+    public Crypto (String currency, Double cryptoValue, String crypto){
         this.mCurrency = currency;
         this.mCryptoValue = cryptoValue;
+        this.mCrypto = crypto;
     }
 
     public Double getbtcValue() {
@@ -40,5 +41,8 @@ public class Crypto {
     }
     public Double getcryptoValue(){
         return mCryptoValue;
+    }
+    public String getCrypto(){
+        return mCrypto;
     }
 }

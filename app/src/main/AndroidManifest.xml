@@ -3,6 +3,7 @@
     package="com.annekay.android.cryptoconvert">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -18,6 +19,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.CreateCardActivity"
+            android:label="Create Card">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.annekay.android.cryptoconvert.view.MainActivity"/>
+        </activity>
+        <activity android:name=".view.ConverterActivity"
+            android:label="Converter">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.annekay.android.cryptoconvert.view.CreateCardActivity" />></activity>
     </application>
 
 </manifest>

@@ -101,7 +101,7 @@ public class FeaturedCoinsFragment extends Fragment implements SwipeRefreshLayou
     }
 
     public void initVolleyCallback(){
-       showWeatherDataView();
+       showCryptoDataView();
         mApiService = new CryptoApiService() {
             @Override
             public void notifySuccess(List<Crypto> mCryptoValues) {
@@ -152,7 +152,7 @@ public class FeaturedCoinsFragment extends Fragment implements SwipeRefreshLayou
         mAdapter = new CurrencyAdapter(getLayoutInflater());
         mRecyclerView.setAdapter(mAdapter);
     }
-    private void showWeatherDataView() {
+    private void showCryptoDataView() {
         mErrorMessageDisplay.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
     }

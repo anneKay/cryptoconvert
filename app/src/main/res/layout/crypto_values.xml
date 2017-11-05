@@ -14,29 +14,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#fce4ec"
             android:orientation="horizontal"
-            android:layout_margin="16dp"
+            android:layout_margin="22dp"
             android:padding="16dp">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_margin="16dp"
+                android:background="#fafafa"
+                android:layout_margin="8dp"
                 android:layout_weight="1">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:id="@+id/btc_image"
+                    android:src="@drawable/ethe"
                     android:layout_gravity="center" />
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="28sp"
+                        android:textSize="22sp"
                         android:id="@+id/base_currency_btc"/>
 
                     <TextView
@@ -53,18 +58,22 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_marginBottom="16dp"
-                android:layout_marginRight="16dp"
+                android:background="@color/white"
+               android:layout_margin="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_weight="1">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/bitcoin"
                     android:id="@+id/eth_image"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"

@@ -88,7 +88,7 @@ public class RecentUtil {
                         String cryptoKey = cryptoCurrency;
 //                        if (cryptoKey != null){
 //                            cryptoKey=cryptoKey.trim();
-                            Crypto crypto = new Crypto(cryptoKey, cryptoObject.getDouble(cryptoKey));
+                            Crypto crypto = new Crypto(cryptoKey, cryptoObject.getDouble(cryptoKey), cryptoValue);
                             mCryptoValues.add(crypto);
                         //}
 

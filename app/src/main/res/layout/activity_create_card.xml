@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.annekay.android.cryptoconvert.view.CreateCardActivity">
+
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:id="@+id/crypto_spinner"
+        android:entries="@array/crypto"
+        android:spinnerMode="dropdown"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:padding="5dp"
+        android:background="@drawable/round_button"
+        android:layout_marginTop="15dp"
+        android:prompt="@string/select_crypto"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:id="@+id/base_spinner"
+        android:entries="@array/currency_arrays"
+        android:spinnerMode="dropdown"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:padding="5dp"
+        android:background="@drawable/round_button"
+        android:layout_marginTop="15dp"
+        android:prompt="@string/select_currency"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:id="@+id/creat_button"
+        android:background="@drawable/custom_button"
+        android:padding="16dp"
+        android:text="Create"
+        android:textSize="18sp"
+        />
+</LinearLayout>

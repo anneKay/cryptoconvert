@@ -4,6 +4,7 @@ package com.annekay.android.cryptoconvert.view;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -41,7 +42,7 @@ import static android.content.ContentValues.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecentFragment extends Fragment {
+public class RecentFragment extends Fragment implements RecentAdapter.RecentAdapterOnClickHandler  {
     FloatingActionButton fab;
     RecentAdapter adapter;
     private RecyclerView mRecyclerView;
@@ -96,7 +97,7 @@ public class RecentFragment extends Fragment {
                 getActivity(), LinearLayoutManager.VERTICAL, false)
         );
         mRecyclerView.hasFixedSize();
-        adapter = new RecentAdapter(getLayoutInflater());
+        adapter = new RecentAdapter(getActivity(), this);
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -114,6 +115,20 @@ public class RecentFragment extends Fragment {
 
             }
         };
+    }
+    @Override
+    public void onClick(String cryptoCode, Double cryptoValue, String cryptoCurrency, String cryptoSymbol) {
+
+        Intent intent = new Intent(getContext(), ConverterActivity.class);
+
+        intent.putExtra("cryptoCode", cryptoCode);
+        intent.putExtra("cryptoCurrency", cryptoCurrency);
+        intent.putExtra("cryptoValue", cryptoValue);
+        intent.putExtra("cryptoSymbol", cryptoSymbol);
+        startActivity(intent);
+        Toast.makeText(getActivity().getApplicationContext(), cryptoCurrency+cryptoCurrency, Toast.LENGTH_LONG).show();
+
+
     }
 
     public static String getCryptoValue(){

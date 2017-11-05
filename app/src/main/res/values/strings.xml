@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">CryptoConvert</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_message"> ohpps!! could not get any currencies at the moment, please try again</string>
+    <string name="feedback"> Something Went Wrong, please check your internet connections and try again</string>
+    <string name="select_crypto"> Select Crypto Currency</string>
+    <string name="select_currency"> Select base Currency</string>
+
+    <string-array name="crypto">
+        <item>(Select Crypto Currency)</item>
+        <item>Ethereum, ETH</item>
+        <item>Bitcoin, BTC</item>
+    </string-array>
+
+    <string-array name="currency_arrays">
+        <item>(Select Your Currency)</item>
+        <item>US DOLLAR, USD</item>
+        <item>EURO, EUR</item>
+        <item>Cedi, GHS</item>
+        <item>Naira, NGN</item>
+        <item>South Korean Won, KRW</item>
+        <item>Swiss France, CHF</item>
+        <item>Mexican Peso, MXN</item>
+        <item>Malasian Ringgit, MYR</item>
+        <item>Moroccan Dirham, MAD</item>
+        <item>Pound Sterling, GBD</item>
+        <item>North Korean Won, KPW</item>
+        <item>Bart, THB</item>
+        <item>Ley, RON</item>
+        <item>Swedish Krona, SEK</item>
+        <item>Saudi Riyal, SAR</item>
+        <item>Russian Ruble, RUB</item>
+        <item>Indian, Rupee, INR</item>
+        <item>Yuan, CNY</item>
+        <item>Yen, JPY</item>
+        <item>Brazilian Real, BRL</item>
+
+
+    </string-array>
+</resources>
