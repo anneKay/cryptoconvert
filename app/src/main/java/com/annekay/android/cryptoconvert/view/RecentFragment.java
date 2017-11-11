@@ -1,58 +1,50 @@
 package com.annekay.android.cryptoconvert.view;
 
-
-import android.app.ProgressDialog;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
+import android.content.ContentUris;
+import android.net.Uri;
+import android.support.v4.content.CursorLoader;
 import android.content.Intent;
+import android.support.v4.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
+import android.support.v4.app.LoaderManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import static com.annekay.android.cryptoconvert.view.CreateCardActivity.getSelectedCrypto;
 import static com.annekay.android.cryptoconvert.view.CreateCardActivity.getSelectedCurrency;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.annekay.android.cryptoconvert.adapter.CryptoCursorAdapter;
+import com.annekay.android.cryptoconvert.data.CryptoContract.CryptoEntry;
+
 import com.android.volley.VolleyError;
 import com.annekay.android.cryptoconvert.R;
-import com.annekay.android.cryptoconvert.adapter.CurrencyAdapter;
-import com.annekay.android.cryptoconvert.adapter.RecentAdapter;
-import com.annekay.android.cryptoconvert.model.ApiResponse;
-import com.annekay.android.cryptoconvert.model.Crypto;
-import com.annekay.android.cryptoconvert.service.CryptoApiService;
-import com.annekay.android.cryptoconvert.service.CryptoUtil;
-import com.annekay.android.cryptoconvert.service.RecentUtil;
-import com.annekay.android.cryptoconvert.viewmodel.ValuesViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecentFragment extends Fragment implements RecentAdapter.RecentAdapterOnClickHandler  {
+public class RecentFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     FloatingActionButton fab;
-    RecentAdapter adapter;
+    //CryptoCursorAdapter adapter;
+    CryptoCursorAdapter adapter;
+    private Uri currentCryptoUri;
+    //ListView listView;
     private RecyclerView mRecyclerView;
-    CryptoApiService mApiService = null;
-    RecentUtil recentUtil;
-    String CRYPTO_URL;
-    List<Crypto> cryptoValues = new ArrayList<>();
-    private String mSelectedCrypto, mSelectedCurrency;
-    private static String cryptoValue, cryptoCurrency;
-
+    private static Double currentCryptoValue;
+    private final int CRYPTO_LOADER_ID = 11;
 
     public RecentFragment() {
         // Required empty public constructor
@@ -74,68 +66,103 @@ public class RecentFragment extends Fragment implements RecentAdapter.RecentAdap
                 startActivity(intent);
             }
         });
+        setupView();
+       // if(getSelectedCrypto() != null ) {
+//
 
-        if(getSelectedCrypto() != null ) {
-            mSelectedCrypto = getSelectedCrypto().trim();
-            mSelectedCurrency = getSelectedCurrency().trim();
-            cryptoValue = mSelectedCrypto;
-            cryptoCurrency = mSelectedCurrency;
-            CRYPTO_URL = "https://min-api.cryptocompare.com/data/pricemulti?fsyms="+mSelectedCrypto+"&tsyms="+mSelectedCurrency;
-            Toast.makeText(getActivity().getApplicationContext(), mSelectedCrypto + mSelectedCurrency, Toast.LENGTH_LONG).show();
+            adapter = new CryptoCursorAdapter(getActivity(), new CryptoCursorAdapter.CryptoCursorAdapterOnClickHandler() {
+                @Override
+                public void onClick(View v, int position, int id) {
+                    Intent intent = new Intent(getContext(), ConverterActivity.class);
+                    currentCryptoUri = ContentUris.withAppendedId(CryptoEntry.CONTENT_URI, id);
+                    Toast.makeText(getActivity(), currentCryptoUri.toString(), Toast.LENGTH_SHORT).show();
+                    intent.setData(currentCryptoUri);
+                    startActivity(intent);
+                }
+            });
+            mRecyclerView.setAdapter(adapter);
 
-          initVolleyCallback();
-            recentUtil = new RecentUtil(mApiService, getContext());
-            recentUtil.getDataVolley("GETCALL", CRYPTO_URL);
-            setupView();
-        }
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            // Called when a user swipes left or right on a ViewHolder
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+
+                int id = (int) viewHolder.itemView.getTag();
+                Uri uri = ContentUris.withAppendedId(CryptoEntry.CONTENT_URI, id);
+                Toast.makeText(getActivity(), uri.toString(), Toast.LENGTH_SHORT).show();
+                getActivity().getApplicationContext().getContentResolver().delete(uri, null, null);
+                getActivity().getSupportLoaderManager().restartLoader(CRYPTO_LOADER_ID, null, RecentFragment.this);
+            }
+        }).attachToRecyclerView(mRecyclerView);
+        getActivity().getSupportLoaderManager().initLoader(CRYPTO_LOADER_ID, null, this);
         return rootView;
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        String[] projection = {
+                CryptoEntry._ID,
+                CryptoEntry.COLUMN_CRYPTO_NAME,
+                CryptoEntry.COLUMN_CURRENCY_VALUE,
+                CryptoEntry.COLUMN_SYMBOL
+        };
+
+        return  new CursorLoader(getActivity(), CryptoEntry.CONTENT_URI,
+                projection, null, null, null);
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        adapter.swapCursor(data);
+
+    }
+
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+        adapter.swapCursor(null);
+
+    }
+//
     private void setupView() {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(
                 getActivity(), LinearLayoutManager.VERTICAL, false)
         );
         mRecyclerView.hasFixedSize();
-        adapter = new RecentAdapter(getActivity(), this);
-        mRecyclerView.setAdapter(adapter);
+       // adapter = new CryptoCursorAdapter(getActivity(), null);
+        //mRecyclerView.setAdapter(adapter);
     }
+    private void deletePet() {
+           int rowsDeleted = getActivity().getApplicationContext().getContentResolver().delete(currentCryptoUri, null, null);
 
-    public void initVolleyCallback(){
-
-        mApiService = new CryptoApiService() {
-            @Override
-            public void notifySuccess(List<Crypto> mCryptoValues) {
-                cryptoValues = mCryptoValues;
-                adapter.addValues(cryptoValues);
-
+            // Show a toast message depending on whether or not the delete was successful.
+            if (rowsDeleted == 0) {
+                // If no rows were deleted, then there was an error with the delete.
+                Toast.makeText(getActivity(), "delete unsuccessful", Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the delete was successful and we can display a toast.
+                Toast.makeText(getActivity(), "delete successful",
+                        Toast.LENGTH_SHORT).show();
             }
-            @Override
-            public void notifyError(String requestType,VolleyError error) {
-
-            }
-        };
-    }
-    @Override
-    public void onClick(String cryptoCode, Double cryptoValue, String cryptoCurrency, String cryptoSymbol) {
-
-        Intent intent = new Intent(getContext(), ConverterActivity.class);
-
-        intent.putExtra("cryptoCode", cryptoCode);
-        intent.putExtra("cryptoCurrency", cryptoCurrency);
-        intent.putExtra("cryptoValue", cryptoValue);
-        intent.putExtra("cryptoSymbol", cryptoSymbol);
-        startActivity(intent);
-        Toast.makeText(getActivity().getApplicationContext(), cryptoCurrency+cryptoCurrency, Toast.LENGTH_LONG).show();
-
-
     }
 
-    public static String getCryptoValue(){
-        return cryptoValue;
+    public static Double getCurrentValue(){
+        return currentCryptoValue;
     }
 
-    public static String getCryptoCurrency(){
-        return cryptoCurrency;
-    }
+//    public static String getCryptoValue(){
+//        return cryptoValue;
+//    }
+//
+//    public static String getCryptoCurrency(){
+//        return cryptoCurrency;
+//    }
 }
