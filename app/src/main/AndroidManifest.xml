@@ -7,12 +7,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/crypto_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +30,12 @@
             android:label="Converter">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.annekay.android.cryptoconvert.view.CreateCardActivity" />></activity>
+                android:value="com.annekay.android.cryptoconvert.view.MainActivity" /></activity>
+
+        <provider
+            android:name=".data.CryptoProvider"
+            android:authorities="com.annekay.android.cryptoconvert"
+            android:exported="false" />
     </application>
 
 </manifest>
