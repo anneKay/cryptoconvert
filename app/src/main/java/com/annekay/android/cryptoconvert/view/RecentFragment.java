@@ -41,7 +41,8 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     //CryptoCursorAdapter adapter;
     CryptoCursorAdapter adapter;
     private Uri currentCryptoUri;
-    //ListView listView;
+    TextView textView;
+
     private RecyclerView mRecyclerView;
     private static Double currentCryptoValue;
     private final int CRYPTO_LOADER_ID = 11;
@@ -56,8 +57,10 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recent_layout, container, false);
         mRecyclerView = rootView.findViewById(R.id.recyclerView);
+        textView = rootView.findViewById(R.id.empty_view);
 
         fab = rootView.findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,8 +70,6 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
             }
         });
         setupView();
-       // if(getSelectedCrypto() != null ) {
-//
 
             adapter = new CryptoCursorAdapter(getActivity(), new CryptoCursorAdapter.CryptoCursorAdapterOnClickHandler() {
                 @Override
@@ -94,11 +95,19 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
 
                 int id = (int) viewHolder.itemView.getTag();
                 Uri uri = ContentUris.withAppendedId(CryptoEntry.CONTENT_URI, id);
+                getActivity().getContentResolver().delete(uri, null, null);
+                adapter.removeItem(id, getActivity());
                 Toast.makeText(getActivity(), uri.toString(), Toast.LENGTH_SHORT).show();
-                getActivity().getApplicationContext().getContentResolver().delete(uri, null, null);
-                getActivity().getSupportLoaderManager().restartLoader(CRYPTO_LOADER_ID, null, RecentFragment.this);
+                getActivity().getSupportLoaderManager().restartLoader(CRYPTO_LOADER_ID, null, RecentFragment.this).forceLoad();
+
+                adapter.notifyDataSetChanged();
+                if (adapter.getItemCount() == 0){
+                    textView.setText("No Cards Yet");
+
+                }
             }
         }).attachToRecyclerView(mRecyclerView);
+
         getActivity().getSupportLoaderManager().initLoader(CRYPTO_LOADER_ID, null, this);
         return rootView;
     }
@@ -121,6 +130,8 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         adapter.swapCursor(data);
+        adapter.notifyDataSetChanged();
+        textView.setVisibility(View.GONE);
 
     }
 
@@ -137,13 +148,11 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
                 getActivity(), LinearLayoutManager.VERTICAL, false)
         );
         mRecyclerView.hasFixedSize();
-       // adapter = new CryptoCursorAdapter(getActivity(), null);
-        //mRecyclerView.setAdapter(adapter);
+
     }
     private void deletePet() {
            int rowsDeleted = getActivity().getApplicationContext().getContentResolver().delete(currentCryptoUri, null, null);
 
-            // Show a toast message depending on whether or not the delete was successful.
             if (rowsDeleted == 0) {
                 // If no rows were deleted, then there was an error with the delete.
                 Toast.makeText(getActivity(), "delete unsuccessful", Toast.LENGTH_SHORT).show();
@@ -158,11 +167,4 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
         return currentCryptoValue;
     }
 
-//    public static String getCryptoValue(){
-//        return cryptoValue;
-//    }
-//
-//    public static String getCryptoCurrency(){
-//        return cryptoCurrency;
-//    }
 }
